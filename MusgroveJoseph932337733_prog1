@@ -1,0 +1,19 @@
+#include <stdio.h>
+
+int main() {
+    int numSegments;
+
+    // Prompt the user for the number of segments
+    do {
+        printf("How many spherical segments you want to evaluate [2-10]? \n");
+        scanf("%d", &numSegments);
+
+        if (numSegments < 2 || numSegments > 10) {
+            printf("Invalid input! Please enter a number between 2 and 10.\n");
+        }
+    } while (numSegments < 2 || numSegments > 10);
+
+    printf("You entered: %d spherical segments.\n", numSegments);
+
+    return 0;
+}
