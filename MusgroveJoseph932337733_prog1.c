@@ -2,10 +2,9 @@
 #include <math.h>
 
 /**
- * Main function for spherical segments program.
- * Calculates total surface area and volume for multiple spherical segments
- * based on user input, validates input, and outputs average results.
+ * Main function for the spherical segments program which will calculate the total surface area and volume for specific amount of spherical segments based on user input.
  */
+
 int main() {
     // Constants
     const double PI = 3.14159265359;
@@ -14,10 +13,10 @@ int main() {
 
     // Variables
     int n;                     // Number of spherical segments
-    double R, ha, hb;          // Input parameters: Radius, heights
+    double R, ha, hb;          // Input parameters: Radius and both heights
     double totalSurfaceArea = 0.0, totalVolume = 0.0; // Totals for averages
 
-    // Prompt for number of spherical segments (validate range)
+    // Obtain the number of spherical segments from user, validate the range
     printf("How many spherical segments you want to evaluate [%d-%d]? \n", MIN_SEGMENTS, MAX_SEGMENTS);
     while (1) {
         scanf("%d", &n);
@@ -29,12 +28,12 @@ int main() {
         }
     }
 
-    // Process each spherical segment
+    // Process and validate each spherical segment
     for (int i = 1; i <= n; ++i) {
         printf("Obtaining data for spherical segment number %d\n", i);
 
         while (1) {
-            // Prompt for input values
+            // Gather input values
             printf("What is the radius of the sphere (R)? \n");
             scanf("%lf", &R);
             printf("What is the height of the top area of the spherical segment (ha)? \n");
@@ -42,10 +41,10 @@ int main() {
             printf("What is the height of the bottom area of the spherical segment (hb)? \n");
             scanf("%lf", &hb);
 
-            // Display entered values
+            // Display the entered values
             printf("Entered data: R = %.2f, ha = %.2f, hb = %.2f\n", R, ha, hb);
 
-            // Validate input
+            // Validate each input to ensure they are within the correct range
             if (R <= 0 || ha <= 0 || hb <= 0) {
                 printf("Invalid Input: All values must be positive.\n\n");
             } else if (ha > R || hb > R) {
@@ -70,7 +69,7 @@ int main() {
         double surfaceArea = topSurfaceArea + bottomSurfaceArea + lateralSurfaceArea;
         double volume = (PI * h / 6) * (3 * pow(a, 2) + 3 * pow(b, 2) + pow(h, 2));
 
-        // Display intermediate values
+        // Display relevant values
         printf("Total Surface Area = %.2f, Volume = %.2f\n\n", surfaceArea, volume);
 
         // Add to totals
