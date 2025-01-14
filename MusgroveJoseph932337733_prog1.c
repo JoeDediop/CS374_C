@@ -46,11 +46,13 @@ int main() {
 
             // Validate each input to ensure they are within the correct range
             if (R <= 0 || ha <= 0 || hb <= 0) {
-                printf("Invalid Input: All values must be positive.\n\n");
-            } else if (ha > R || hb > R) {
-                printf("Invalid Input: ha and hb must be less than or equal to R.\n\n");
+                printf("Invalid Input: R = %.2f, ha = %.2f, hb = %.2f. All values must be positive.\n\n", R, ha, hb);
+            } else if (ha > R) {
+                printf("Invalid Input: R = %.2f, ha = %.2f. R must be greater than or equal to ha\n\n", R, ha);
+            } else if (hb > R) {
+                printf("Invalid Input: R = %.2f, hb = %.2f. R must be greater than or equal to hb\n\n", R, hb);
             } else if (ha < hb) {
-                printf("Invalid Input: ha must be greater than or equal to hb.\n\n");
+                printf("Invalid Input: ha = %.2f, hb = %.2f. ha must be greater than or equal to hb.\n\n", ha, hb);
             } else {
                 break;
             }
