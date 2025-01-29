@@ -105,7 +105,7 @@ void showMoviesByYear(struct movie *list, int year) {
         current = current->next;
     }
     if (!found) {
-        printf("No movies found for the year %d.\n", year);
+        printf("No data about movies released in the year %d.\n", year);
     }
 }
 
