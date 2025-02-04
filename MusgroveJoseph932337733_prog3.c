@@ -1,93 +1,70 @@
-import os
-import random
-import glob
-import csv
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <time.h>
 
-def find_csv_files():
-    """Find all CSV files starting with 'movies_' in the current directory."""
-    return glob.glob("movies_*.csv")
+#define MAX_FILENAME 256
+#define MAX_LINE 1024
+#define MAX_YEAR 3000
+#define MIN_YEAR 1000
 
-def get_largest_csv():
-    """Find the largest CSV file based on size."""
-    csv_files = find_csv_files()
-    return max(csv_files, key=os.path.getsize) if csv_files else None
+// Function to generate a random directory name
+void generate_random_dir(char *dirname) {
+    srand(time(NULL));
+    int random_number = rand() % 100000;
+    sprintf(dirname, "movies_%d", random_number);
+    mkdir(dirname, 0750);
+}
 
-def get_smallest_csv():
-    """Find the smallest CSV file based on size."""
-    csv_files = find_csv_files()
-    return min(csv_files, key=os.path.getsize) if csv_files else None
+// Function to process the CSV file and group movies by year
+void process_csv(const char *filename, const char *dirname) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
 
-def process_csv_file(file_name, onid):
-    """Process the selected CSV file and organize movies by year."""
-    if not os.path.exists(file_name):
-        print("File not found.")
-        return
+    char line[MAX_LINE];
+    fgets(line, sizeof(line), file); // Skip header
+
+    while (fgets(line, sizeof(line), file)) {
+        char title[MAX_FILENAME];
+        int year;
+        float rating;
+
+        if (sscanf(line, "%[^,],%d,%f", title, &year, &rating) == 3) {
+            if (year < MIN_YEAR || year > MAX_YEAR) continue;
+
+            char filepath[MAX_FILENAME];
+            sprintf(filepath, "%s/%d.txt", dirname, year);
+
+            FILE *year_file = fopen(filepath, "a");
+            if (year_file) {
+                fprintf(year_file, "%s, %.1f\n", title, rating);
+                fclose(year_file);
+            }
+        }
+    }
+
+    fclose(file);
+}
+
+// Main function
+int main() {
+    char filename[MAX_FILENAME];
+    char dirname[MAX_FILENAME];
     
-    dir_name = f"{onid}.movies.{random.randint(10000, 99999)}"
-    os.makedirs(dir_name, mode=0o750, exist_ok=True)
-    
-    movies_by_year = {}
-    with open(file_name, 'r', encoding='utf-8') as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip header
-        for row in reader:
-            if len(row) < 4:
-                continue  # Skip malformed lines
-            title, year, languages, rating = row
-            year = year.strip()
-            if year not in movies_by_year:
-                movies_by_year[year] = []
-            movies_by_year[year].append(title.strip())
-    
-    for year, titles in movies_by_year.items():
-        year_file = os.path.join(dir_name, f"{year}.txt")
-        with open(year_file, 'w', encoding='utf-8') as yf:
-            for title in titles:
-                yf.write(title + '\n')
-        os.chmod(year_file, 0o640)
-    
-    print(f"Processed '{file_name}'. Files created in '{dir_name}'")
+    printf("Enter the CSV filename: ");
+    scanf("%255s", filename);
 
-def main_menu():
-    """Display the main menu and handle user choices."""
-    onid = input("Enter your ONID: ")
-    while True:
-        print("\nMain Menu:")
-        print("1. Select a file to process")
-        print("2. Exit")
-        choice = input("Enter your choice: ")
-        
-        if choice == '1':
-            csv_files = find_csv_files()
-            if not csv_files:
-                print("No CSV files found.")
-                continue
-            
-            print("\nSelect a file:")
-            print("1. Largest file")
-            print("2. Smallest file")
-            print("3. Enter filename manually")
-            file_choice = input("Choose an option: ")
-            
-            if file_choice == '1':
-                file_name = get_largest_csv()
-            elif file_choice == '2':
-                file_name = get_smallest_csv()
-            elif file_choice == '3':
-                file_name = input("Enter the file name: ")
-            else:
-                print("Invalid choice.")
-                continue
-            
-            if file_name and os.path.exists(file_name):
-                process_csv_file(file_name, onid)
-            else:
-                print("File not found.")
-        elif choice == '2':
-            print("Exiting.")
-            break
-        else:
-            print("Invalid choice. Try again.")
+    generate_random_dir(dirname);
+    printf("Created directory: %s\n", dirname);
+    
+    process_csv(filename, dirname);
+    printf("Processing completed.\n");
 
-if __name__ == "__main__":
-    main_menu()
+    return 0;
+}
