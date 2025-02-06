@@ -4,6 +4,8 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <limits.h>
+#include <unistd.h>
 
 #define PREFIX "movies_"
 #define EXT ".csv"
