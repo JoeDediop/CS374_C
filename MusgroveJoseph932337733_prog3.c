@@ -51,10 +51,45 @@ void create_random_directory(char *dir_name) {
 void process_file(const char *filename) {
     char dir_name[MAX_FILENAME];
     create_random_directory(dir_name);
+
     printf("Now processing the chosen file named %s\n", filename);
     printf("Created directory with name %s\n", dir_name);
-    // File processing logic here...
+
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Error opening file");
+        return;
+    }
+
+    char line[1024];
+    fgets(line, sizeof(line), file);  // Skip the header line
+
+    while (fgets(line, sizeof(line), file)) {
+        char title[256];
+        int year;
+        char language[256];
+        double rating;
+
+        // Parse CSV line
+        if (sscanf(line, "%255[^,],%d,%255[^,],%lf", title, &year, language, &rating) == 4) {
+            char year_file[MAX_FILENAME];
+            sprintf(year_file, "%s/%d.txt", dir_name, year);
+
+            // Append movie title to the corresponding year file
+            FILE *year_fp = fopen(year_file, "a");
+            if (year_fp) {
+                fprintf(year_fp, "%s\n", title);
+                fclose(year_fp);
+            } else {
+                perror("Error opening year file");
+            }
+        }
+    }
+
+    fclose(file);
+    printf("Processing completed. Files stored in directory: %s\n", dir_name);
 }
+
 
 int main() {
     int choice;
