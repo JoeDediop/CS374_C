@@ -43,7 +43,7 @@ char* find_file(int find_largest) {
 // Function to generate a random directory name
 void create_random_directory(char *dir_name) {
     srand(time(NULL));
-    sprintf(dir_name, "chaudhrn.movies.%d", rand() % 100000);
+    sprintf(dir_name, "MusgroveJoseph932337733.movies.%d", rand() % 100000);
     mkdir(dir_name, 0755);
 }
 
