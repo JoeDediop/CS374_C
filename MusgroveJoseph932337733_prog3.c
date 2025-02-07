@@ -45,13 +45,13 @@ void create_random_directory(char *dir_name) {
     srand(time(NULL));
     snprintf(dir_name, MAX_FILENAME, "MusgroveJoseph932337733.movies.%d", rand() % 100000);
     
-    if (mkdir(dir_name, 0775) == -1) {
+    if (mkdir(dir_name, 0750) == -1) {
         perror("Error creating directory");
         exit(1);
     }
     
     // Ensure correct permissions (if mkdir doesn't set them properly)
-    chmod(dir_name, 0775);
+    chmod(dir_name, 0750);
 }
 
 
@@ -91,8 +91,8 @@ void process_file(const char *filename) {
                 fprintf(year_fp, "%s\n", title);
                 fclose(year_fp);
 
-                // Ensure correct file permissions (expected 0664)
-                chmod(year_file, 0664);
+                // Ensure correct file permissions (expected 0640)
+                chmod(year_file, 0640);
             } else {
                 perror("Error opening year file");
             }
