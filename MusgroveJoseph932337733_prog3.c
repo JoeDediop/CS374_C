@@ -40,14 +40,22 @@ char* find_file(int find_largest) {
     return best_file;
 }
 
-// Function to generate a random directory name
+// Function to create a directory with corrected permissions
 void create_random_directory(char *dir_name) {
     srand(time(NULL));
-    sprintf(dir_name, "MusgroveJoseph932337733.movies.%d", rand() % 100000);
-    mkdir(dir_name, 0755);
+    snprintf(dir_name, MAX_FILENAME, "MusgroveJoseph932337733.movies.%d", rand() % 100000);
+    
+    if (mkdir(dir_name, 0775) == -1) {
+        perror("Error creating directory");
+        exit(1);
+    }
+    
+    // Ensure correct permissions (if mkdir doesn't set them properly)
+    chmod(dir_name, 0775);
 }
 
-// Function to process a selected file
+
+// Function to process the CSV file
 void process_file(const char *filename) {
     char dir_name[MAX_FILENAME];
     create_random_directory(dir_name);
@@ -73,13 +81,18 @@ void process_file(const char *filename) {
         // Parse CSV line
         if (sscanf(line, "%255[^,],%d,%255[^,],%lf", title, &year, language, &rating) == 4) {
             char year_file[MAX_FILENAME];
-            sprintf(year_file, "%s/%d.txt", dir_name, year);
+            
+            // Use snprintf to prevent buffer overflow
+            snprintf(year_file, MAX_FILENAME, "%s/%d.txt", dir_name, year);
 
             // Append movie title to the corresponding year file
             FILE *year_fp = fopen(year_file, "a");
             if (year_fp) {
                 fprintf(year_fp, "%s\n", title);
                 fclose(year_fp);
+
+                // Ensure correct file permissions (expected 0664)
+                chmod(year_file, 0664);
             } else {
                 perror("Error opening year file");
             }
