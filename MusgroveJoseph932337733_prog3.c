@@ -146,7 +146,7 @@ int main() {
                     printf("The file %s was not found. Try again\n", filename);
                 }
             } else {
-                printf("Invalid choice. Try again.\n");
+                printf("You entered an incorrect choice. Try again.\n");
             }
         }
     }
