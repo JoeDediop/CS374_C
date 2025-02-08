@@ -149,9 +149,7 @@ int main() {
                 } else {
                     printf("The file %s was not found. Try again.\n", filename);
                 }
-            } else {
-                printf("You entered an incorrect choice. Try again.\n");
-            }
+            } 
         }
     }
     
