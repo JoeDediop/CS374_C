@@ -108,14 +108,18 @@ int main() {
     int choice;
     char filename[MAX_FILENAME];
     char *selected_file;
-    
+
     while (1) {
         printf("\n1. Select file to process\n2. Exit the program\n\nEnter a choice 1 or 2: ");
         scanf("%d", &choice);
         getchar();  // Clear newline
-        
-        if (choice == 2) break;
-        if (choice != 1) continue;
+
+        if (choice == 2) {
+            break;
+        } else if (choice != 1) {
+            printf("You entered an incorrect choice. Try again.\n");
+            continue;  // Re-loop
+        }
 
         while (1) {
             printf("\nWhich file you want to process?\n");
@@ -143,13 +147,13 @@ int main() {
                     process_file(filename);
                     break;
                 } else {
-                    printf("The file %s was not found. Try again\n", filename);
+                    printf("The file %s was not found. Try again.\n", filename);
                 }
             } else {
                 printf("You entered an incorrect choice. Try again.\n");
             }
         }
     }
+    
     return 0;
 }
-
