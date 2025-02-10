@@ -11,7 +11,9 @@
 #define EXT ".csv"
 #define MAX_FILENAME 256
 
-// Function to get the largest or smallest file
+/*
+ * Function to get the largest or smallest file
+ */
 char* find_file(int find_largest) {
     DIR *dir;
     struct dirent *entry;
@@ -40,7 +42,9 @@ char* find_file(int find_largest) {
     return best_file;
 }
 
-// Function to create a directory with corrected permissions
+/*
+ * Function to create a directory with corrected permissions
+ */
 void create_random_directory(char *dir_name) {
     srand(time(NULL));
     snprintf(dir_name, MAX_FILENAME, "MusgroveJoseph932337733.movies.%d", rand() % 100000);
@@ -54,8 +58,9 @@ void create_random_directory(char *dir_name) {
     chmod(dir_name, 0750);
 }
 
-
-// Function to process the CSV file
+/*
+ * Function to process the CSV file
+ */
 void process_file(const char *filename) {
     char dir_name[MAX_FILENAME];
     create_random_directory(dir_name);
@@ -103,7 +108,9 @@ void process_file(const char *filename) {
     printf("Processing completed. Files stored in directory: %s\n", dir_name);
 }
 
-
+/*
+ * Main function
+ */
 int main() {
     int choice;
     char filename[MAX_FILENAME];
